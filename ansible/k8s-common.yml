@@ -3,8 +3,8 @@
     hosts: all
     become: yes
     vars:
-      apt_k8s_version: 1.24.0-00
-      k8s_version: 1.24.0
+      apt_k8s_version: 1.30.2-1.1
+      k8s_version: 1.30.2
     tasks:
     # Update apt cache and install required packages
     - name: Update apt cache and install required packages
@@ -147,16 +147,12 @@
   
     # Download and Install Kubernetes GPG key
     - name: Download and Install Kubernetes GPG key
-      apt_key:
-        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        state: present
+      command: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
       become: yes
   
     # Add Kubernetes repository
     - name: Add Kubernetes repository
-      apt_repository:
-        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-        state: present
+      command: echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
       become: yes
   
     # Install Kubernetes packages and set to version  "{{ k8s_version }}"
