@@ -1,0 +1,28 @@
+---
+  - name: K8s-Master
+    hosts: k8s-control-plane
+    become: yes
+    vars:
+      k8s_version: 1.24.0
+    tasks:
+    # If the node is a master node then initialize the cluster
+    - name: Initialize the cluster
+      command: kubeadm init --pod-network-cidr=10.0.0.0/16 --kubernetes-version={{ k8s_version }}
+      register: kubeadm_init
+
+    # Copy the kubernetes config to user
+    - name: Copy kubernetes config to user
+      shell: |
+              mkdir -p $HOME/.kube
+              cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+              chown $(id -u):$(id -g) $HOME/.kube/config
+      become: yes
+
+    # # If the node is a master node then apply the flannel network
+    # - name: Apply the flannel network
+    #   command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    #   when: groups['k8s-control-plane'] | intersect(groups['k8s-cluster']) | length > 0
+  
+    # If the node is a master node then apply the Calico network and wait for the pods to be ready
+    - name: Apply the Calico network and wait for the pods to be ready
+      shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml

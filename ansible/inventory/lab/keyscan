@@ -1,0 +1,11 @@
+k8s-control-plane.lan
+k8s-worker1.lan
+k8s-worker2.lan
+
+k8s-control-plane
+k8s-worker1
+k8s-worker2
+
+192.168.189.99
+192.168.189.176
+192.168.189.103

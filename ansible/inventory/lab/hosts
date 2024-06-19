@@ -1,0 +1,17 @@
+[k8s-cluster]
+k8s-control-plane
+k8s-worker1
+k8s-worker2
+
+[k8s-workers]
+k8s-worker1
+k8s-worker2
+
+[k8s-control-plane]
+k8s-control-plane
+
+[k8s-workers1]
+k8s-worker1
+
+[k8s-workers2]
+k8s-worker2

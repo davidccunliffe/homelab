@@ -1,0 +1,39 @@
+#cloud-config
+autoinstall:
+  version: 1
+
+  ssh:
+    install-server: true
+    allow-pw: true      
+
+  late-commands:
+    # randomly generate the hostname & show the ip at boot
+    - echo control > /target/etc/hostname
+    # dump the IP out at login screen
+    - echo "Ubuntu 20.04 LTS \nIP - $(hostname -I)\n" > /target/etc/issue
+    # use 100% of the storage
+    - curtin in-target --target=/target -- lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+    - curtin in-target --target=/target -- resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+    # add the other k8s nodes to the hosts file
+    - echo "192.168.189.77    control >> /target/etc/hosts
+    - echo "192.168.189.99    k8s-control-plane.lan" >> /target/etc/hosts
+    - echo "192.168.189.176   k8s-worker1.lan" >> /target/etc/hosts
+    - echo "192.168.189.103   k8s-worker2.lan" >> /target/etc/hosts
+
+  user-data:
+    disable_root: true
+    timezone: America/Chicago
+    package_upgrade: true
+    ssh_pwauth: true # allow password based ssh login
+    users:
+        # password is "ubuntu" - created with `docker run -it --rm alpine mkpasswd --method=SHA-512`
+      - name: ubuntu
+        passwd: $5$fE2mCb8YdUqlRHeL$E7.YKH4MTdd6mDk4V0hZnivMDt3y5j3gon1ywdoBe9A
+        lock_passwd: false
+        shell: /bin/bash
+        primary_group: users
+        groups: sudo
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+            - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+9sUCTMcPEZNoqwWewGKZUrlU/7u52KUL9udaFTlEpWfGYuqlNo1xTz4bFx3rroLerLMKgE5L7JMxHGRUUstzH0Z7BGGTqgHwG2CEzkpbA7/q+PqBC1bqFaklF5FoanW2VSui9E6Igu7jv01NTmFPZXW6xNCydq4kqWqT8aYqCqz2DLGUA9aa9PV8B3PbmfCMUDF+p/iWZoa8WMgq6/we80FhKB0tfULgwMdNTt91CGpl6bBIbZvCftL2IvqgUHyFWIq2fOtdLdbxf42XwM0hqu6wv6vMWYVxljeVQopYFJj0aTs33tAXk/I2Rkdj0RO9hxN+xAZGGVJhuCXfvO6RX8eNq/XwemTnQNFMISxJ6FvD53zNCYDtSA5qp41sNqSres/rDQoC8hf5jq+YhDzPx1diq3Z2MmYI9fj/A6gy9jqqZHyclsZ78fagKoV4dXC3/EyTZ66j+UqLeqZ6GAc0zNk8y82qL5tt1K/a5OqHcNx8N5GVptHEWdVhBPnGGbdRS4XF6tazySb1pz25dl5jCXv8uO7e2ke3J8RjbHKoKVqxPP3bcst8jOyxvZAouOw/L9/9B0kicTjmVT4sSj6RYEE5jiR9tlso4acfz/16NchePJ6DruCIjLdmC93/2DVe/KGyMAHXqCwqvmNAVAlkW3PRwYzxlSv8w/R8b8Qw6w=="
+            - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCkiiyLBAWpWsQX1c0AEkvGqRJZV27PeT7Z+KEuWgL9XKQYZwpyxTZL75Ippgh3lV6hGgdviGg/DHIGrhwkKOU8KacWjiMpcYDunxVK1EHrHyYUT/9RGEVbXDyXp1rfkw+qwq8k5xAudczatWr1B0WVG7Twp7rfOs/EXmY0kWg6nmRQ1SaRT25HpDyUULQMaIIrgnNjvemWyJq+KPyI11V37Um5OBgy3FZeB0fcJeijqf6TkOjob+Yc5KFlZ8wRLjF/xMZV9wJyqFQZnEWA/WajqwLSKaVpS+PdSUHhdSriedtydpmxIHxBWSUuSuPULdFlWNnVipyCQ9rXnXVC22m3SDlXl9hUZaOKZFzQZPGo/ORvHNFzfKhqPDReVf4nuzWcPLBtD7rjZl1rEbxZJhwGmC/GozJtDEyakM/Ws56VRyisBS94+uWJOM5z6NTsNWd2EexwUF+tFRrlr1juxVnWVKkkn+a3b6786+XtbWcJoB+M+uzU2370XuP2DScM2EU="
