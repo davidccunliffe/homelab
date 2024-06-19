@@ -7,7 +7,7 @@ This is my homelab. Ansible setup for my homelab. Still a work in progress.
 Download this repo to the control machine. Then run the following commands:
 
 ```bash
-git clone https://github.com/2wdavidcunliffe/homelab.git
+git clone https://github.com/davidccunliffe/homelab.git
 cd homelab
 ./ubuntu-ansible-bootstrap.sh
 ansible-playbook ./ansible/k8s-master.yml --ask-pass -i ./ansible/inventory/lab/hosts
