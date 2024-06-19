@@ -1,4 +1,10 @@
 #cloud-config
+runcmd:
+  - [eval, 'echo $(cat /proc/cmdline) "autoinstall" > /root/cmdline']
+  - [eval, 'mount -n --bind -o ro /root/cmdline /proc/cmdline']
+  - [eval, 'snap restart subiquity.subiquity-server']
+  - [eval, 'snap restart subiquity.subiquity-service']
+  
 autoinstall:
   version: 1
 
@@ -8,9 +14,9 @@ autoinstall:
 
   late-commands:
     # randomly generate the hostname & show the ip at boot
-    - echo k8s-worker2 > /target/etc/hostname
+    - echo  k8s-worker2 > /target/etc/hostname
     # dump the IP out at login screen
-    - echo "Ubuntu 20.04 LTS \nIP - $(hostname -I)\n" > /target/etc/issue
+    - echo "Ubuntu 24.04 LTS \nIP - $(hostname -I)\n" > /target/etc/issue
     # use 100% of the storage
     - curtin in-target --target=/target -- lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
     - curtin in-target --target=/target -- resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
