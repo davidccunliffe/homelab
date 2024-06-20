@@ -1,14 +1,8 @@
 - hosts: masters
   become: yes
   tasks:
-  - name: kill kublet service
-    become: yes
-    become_user: ubuntu
-    shell: pkill kubelet
-    ignore_errors: yes
-
   - name: initialize the cluster
-    shell: kubeadm init --service-cidr 10.96.0.0/14 --pod-network-cidr 10.90.0.0/16 --kubernetes-version stable-1.28  --control-plane-endpoint kube-apiserver:6443 --cri-socket=/run/containerd/containerd.sock >> cluster_initialized.txt
+    shell: kubeadm init --service-cidr 10.96.0.0/14 --pod-network-cidr 10.90.0.0/16 --kubernetes-version stable-1.28  --control-plane-endpoint kube-apiserver:6443 --cri-socket=/run/containerd/containerd.sock  --ignore-preflight-errors=all >> cluster_initialized.txt
     args:
       chdir: $HOME
       creates: cluster_initialized.txt
