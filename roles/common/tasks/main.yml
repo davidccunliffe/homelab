@@ -1,5 +1,5 @@
 - name: HA Control DNS
   lineinfile:
     dest: /etc/hosts
-    line: '192.168.63.99 kube-apiserver'
+    line: '10.96.0.2 kube-apiserver'
     search_string: 'kube-apiserver'
