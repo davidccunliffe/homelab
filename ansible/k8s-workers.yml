@@ -3,5 +3,5 @@
     hosts: k8s-workers
     become: yes
     vars:
-      k8s_version: 1.29.3
+      k8s_version: 1.30.2
     tasks:

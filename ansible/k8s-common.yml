@@ -3,11 +3,11 @@
     hosts: all
     become: yes
     vars:
-      apt_k8s_version: 1.29.3-1.1
-      k8s_version: 1.29.3
-      k8s_url_apt_key: "https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key"
+      apt_k8s_version: 1.30.2-1.1
+      k8s_version: 1.30.2
+      k8s_url_apt_key: "https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key"
       k8s_gpgpath: /usr/share/keyrings/kubernetes-apt-keyring.gpg
-      k8s_repository: "https://pkgs.k8s.io/core:/stable:/v1.28/deb/"
+      k8s_repository: "https://pkgs.k8s.io/core:/stable:/v1.30/deb/"
     tasks:
     # Update apt cache and install required packages
     - name: Update apt cache and install required packages
