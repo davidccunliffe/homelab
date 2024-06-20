@@ -7,7 +7,7 @@
     tasks:
     # If the node is a master node then initialize the cluster
     - name: Initialize the cluster
-      command: kubeadm init --pod-network-cidr=10.0.0.0/16 --kubernetes-version={{ k8s_version }}
+      command: pkill kubelet && kubeadm init --pod-network-cidr=10.0.0.0/16 --kubernetes-version={{ k8s_version }}
       register: kubeadm_init
 
     # Copy the kubernetes config to user
