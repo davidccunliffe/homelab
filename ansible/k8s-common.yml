@@ -5,6 +5,9 @@
     vars:
       apt_k8s_version: 1.30.2-1.1
       k8s_version: 1.30.2
+      k8s_url_apt_key: "https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key"
+      k8s_gpgpath: /usr/share/keyrings/kubernetes-apt-keyring.gpg
+      k8s_repository: "https://pkgs.k8s.io/core:/stable:/v1.28/deb/"
     tasks:
     # Update apt cache and install required packages
     - name: Update apt cache and install required packages
@@ -147,13 +150,15 @@
   
     # Download and Install Kubernetes GPG key
     - name: Download and Install Kubernetes GPG key
-      command: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-      become: yes
+      shell: curl -fsSL {{ k8s_url_apt_key }} | gpg --dearmor -o {{ k8s_gpgpath }}
+      args:
+        creates: "{{ k8s_gpgpath }}"
   
     # Add Kubernetes repository
     - name: Add Kubernetes repository
-      command: echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-      become: yes
+      apt_repository:
+        filename: kubernetes
+        repo: "deb [signed-by={{ k8s_gpgpath }}] {{ k8s_repository }} /"
   
     # Install Kubernetes packages and set to version  "{{ k8s_version }}"
     - name: Install Kubernetes packages and set to version  "{{ k8s_version }}"
@@ -164,8 +169,8 @@
         allow_downgrade: true
       with_items:
         - "kubelet={{ apt_k8s_version }}"
+        - "kubernetes-cni={{ apt_k8s_version }}"
         - "kubeadm={{ apt_k8s_version }}"
-        - "kubectl={{ apt_k8s_version }}"
       become: yes
   
     # Lock Kubernetes packages
@@ -175,8 +180,8 @@
         selection: hold
       with_items:
         - kubelet
+        - kubernetes-cni
         - kubeadm
-        - kubectl
       become: yes
   
     # Restart containerd
