@@ -170,8 +170,8 @@
         allow_downgrade: true
       with_items:
         - "kubelet={{ apt_k8s_version }}"
-        - "kubernetes-cni={{ apt_k8s_version }}"
-        - "kubeadm={{ apt_k8s_cni_version }}"
+        - "kubernetes-cni={{ apt_k8s_cni_version }}"
+        - "kubeadm={{ apt_k8s_version }}"
       become: yes
   
     # Lock Kubernetes packages
