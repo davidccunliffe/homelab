@@ -10,9 +10,9 @@ spec:
   selector:
     component: kube-apiserver
     tier: control-plane
-  clusterIP: 10.96.0.2
+  clusterIP: 192.168.63.99
   clusterIPs:
-  - 10.96.0.2
+  - 192.168.63.99
   internalTrafficPolicy: Cluster
   ipFamilies:
   - IPv4
