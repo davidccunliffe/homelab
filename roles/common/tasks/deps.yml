@@ -44,7 +44,7 @@
 - name: Add Kubernetes repository
   apt_repository:
     filename: kubernetes
-    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.gpg] "https://pkgs.k8s.io/core:/stable:/v1.28/deb/" /"
+    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /"
 
 - name: install containerd
   apt:
