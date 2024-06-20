@@ -38,16 +38,16 @@
       chdir: $HOME
       creates: pod_network_setup.txt
 
-  - name: Annotate Node
-    become: yes
-    become_user: ubuntu
-    shell:
-      cmd: |
-        kubectl annotate node $(uname -n) "kube-router.io/node.asn=64512" --overwrite
-        kubectl annotate node $(uname -n) "kube-router.io/peer.ips=192.168.63.253,192.168.63.254" --overwrite
-        kubectl annotate node $(uname -n) "kube-router.io/peer.asns=65000,65000" --overwrite
-    args:
-      chdir: $HOME
+  # - name: Annotate Node
+  #   become: yes
+  #   become_user: ubuntu
+  #   shell:
+  #     cmd: |
+  #       kubectl annotate node $(uname -n) "kube-router.io/node.asn=64512" --overwrite
+  #       kubectl annotate node $(uname -n) "kube-router.io/peer.ips=192.168.63.253,192.168.63.254" --overwrite
+  #       kubectl annotate node $(uname -n) "kube-router.io/peer.asns=65000,65000" --overwrite
+  #   args:
+  #     chdir: $HOME
 
   - name: add kube-apiserver service
     become: yes
