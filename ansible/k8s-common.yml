@@ -4,10 +4,11 @@
     become: yes
     vars:
       apt_k8s_version: 1.30.2-1.1
+      apt_k8s_cni_version: 1.4.0-1.1
       k8s_version: 1.30.2
-      k8s_url_apt_key: "https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key"
+      k8s_url_apt_key: "https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key"
       k8s_gpgpath: /usr/share/keyrings/kubernetes-apt-keyring.gpg
-      k8s_repository: "https://pkgs.k8s.io/core:/stable:/v1.30/deb/"
+      k8s_repository: " https://pkgs.k8s.io/core:/stable:/v1.28/deb/"
     tasks:
     # Update apt cache and install required packages
     - name: Update apt cache and install required packages
@@ -170,7 +171,7 @@
       with_items:
         - "kubelet={{ apt_k8s_version }}"
         - "kubernetes-cni={{ apt_k8s_version }}"
-        - "kubeadm={{ apt_k8s_version }}"
+        - "kubeadm={{ apt_k8s_cni_version }}"
       become: yes
   
     # Lock Kubernetes packages
