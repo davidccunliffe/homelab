@@ -3,7 +3,7 @@
     hosts: k8s-control-plane
     become: yes
     vars:
-      k8s_version: 1.30.2
+      k8s_version: 1.28.11
     tasks:
     # If the node is a master node then initialize the cluster
     - name: Initialize the cluster

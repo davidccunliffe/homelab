@@ -3,9 +3,9 @@
     hosts: all
     become: yes
     vars:
-      apt_k8s_version: 1.30.2-1.1
-      apt_k8s_cni_version: 1.4.0-1.1
-      k8s_version: 1.30.2
+      apt_k8s_version: 1.28.11-1.1
+      apt_k8s_cni_version: 1.2.0-2.1
+      k8s_version: 1.28.11
       k8s_url_apt_key: "https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key"
       k8s_gpgpath: /usr/share/keyrings/kubernetes-apt-keyring.gpg
       k8s_repository: " https://pkgs.k8s.io/core:/stable:/v1.28/deb/"
