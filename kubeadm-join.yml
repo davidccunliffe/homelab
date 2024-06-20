@@ -19,7 +19,7 @@
       line: '192.168.63.99 kube-apiserver'
       search_string: 'kube-apiserver'
   - name: join cluster
-    shell: "{{ hostvars['k8s-control-plane'].join_command }} --cri-socket=/run/containerd/containerd.sock --ignore-preflight-errors=all >> node_joined.txt"
+    shell: "{{ hostvars['k8s-control-plane'].join_command }} --cri-socket=unix:///run/containerd/containerd.sock --ignore-preflight-errors=all >> node_joined.txt"
     args:
       chdir: $HOME
       creates: node_joined.txt
