@@ -58,11 +58,11 @@
       creates: kube-apiserver.txt
 
   - name: add helm key to apt
-  become: yes
-  become_user: root
-  apt_key:
-    url: https://baltocdn.com/helm/signing.asc
-    state: present
+    become: yes
+    become_user: root
+    apt_key:
+      url: https://baltocdn.com/helm/signing.asc
+      state: present
 
   - name: install helm repo
     become: yes
