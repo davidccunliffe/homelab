@@ -131,7 +131,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 ### Initialize the cluster
 > After you Initialize the cluster, you will see a message with instructions on how to join worker nodes to the cluster. Make a note of the kubeadm join command for future reference.
 ```bash
-sudo kubeadm init --control-plane-endpoint=k8s-control-plane.lan
+sudo kubeadm init --control-plane-endpoint=k8sMaster.lan
 ```
 
 
@@ -152,7 +152,7 @@ kubectl get nodes
 > This is just an example command
 
 ```bash
-kubeadm join k8s-control-plane.lan:6443 --token b1gn14.39lh83lkzvi9j7ww \
+kubeadm join k8sMaster.lan:6443 --token b1gn14.39lh83lkzvi9j7ww \
         --discovery-token-ca-cert-hash sha256:5be9dea5e560c4cbxxxxecd27cc6e1c31e90ae953cb48c1e7d702e3d2e2xxxx
 ```
 
