@@ -269,6 +269,7 @@ curl http://<node-server-ip>:<NODEPORT> #off cluster
 ```
 
 ### Curl the Assigned IP from metallb-controller
+> Note that you can forward the FW to this IP address to expose it to the internet. But make sure to setup SSL first as this is a lab only put it up for a few minutes.
 ```bash
 curl http://192.168.189.51
 ```
