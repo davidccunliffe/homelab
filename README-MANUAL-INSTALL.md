@@ -15,30 +15,35 @@ In this guide, we are using one master node and two worker nodes. Following are 
 
 ## Lab Setup
 
-- Master Node:  192.168.63.99 – k8s-control-plane.lan
-- First Worker Node:  192.168.63.176 – k8s-worker1.lan
-- Second Worker Node:  192.168.63.101 – k8s-worker2.lan
+- Master Node:  192.168.189.6  -  k8sMaster.lan
+- First Worker Node:  192.168.189.7  -  k8sWorker1.lan
+- Second Worker Node:  192.168.189.8  -  k8sWorker2.lan
+- Third Worker Node: 192.168.189.9  -  k8sWorker3.lan
 
 ## Set hostname on each Node
 
 ### Login to master node and set hostname via hostnamectl command.
 ```bash
-sudo hostnamectl set-hostname "k8s-control-plane.lan"
+sudo hostnamectl set-hostname "k8sMaster.lan"
 exec bash
 ```
 
 ### On the worker nodes, run:
 ```bash
-sudo hostnamectl set-hostname "k8s-worker1.lan"
-sudo hostnamectl set-hostname "k8s-worker2.lan"
+sudo hostnamectl set-hostname "k8sWorker1.lan"
+exec bash
+sudo hostnamectl set-hostname "k8sWorker2.lan"
+exec bash
+sudo hostnamectl set-hostname "k8sWorker3.lan"
 exec bash
 ```
 
 ### Add the following to each node:
 ```bash
-192.168.63.99    k8s-control-plane.lan k8smaster
-192.168.63.176   k8s-worker1.lan k8sworker1
-192.168.63.101   k8s-worker2.lan k8sworker2
+192.168.189.6    k8sMaster.lan k8smaster
+192.168.189.7    k8sWorker1.lan k8sworker1
+192.168.189.8    k8sWorker2.lan k8sworker2
+192.168.189.9    k8sWorker3.lan k8sworker3
 ```
 
 ## Disable Swap and Add Kernel Parameters
