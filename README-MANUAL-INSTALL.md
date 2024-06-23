@@ -171,12 +171,12 @@ kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/
 
 ### Verify the status of the pods in kube-system namespace
 ```bash
-kubectl get pods -n kube-system
+kubectl get pods -n kube-system -o wide
 ```
 
 ### Check node status
 ```bash
-kubectl get nodes
+kubectl get nodes -o wide
 ```
 
 ## Test your Kubernetes Cluster Install now
@@ -200,9 +200,35 @@ kubectl expose deployment nginx-app --type=NodePort --port=80
 ```bash
 kubectl get svc nginx-app
 kubectl describe svc nginx-app
+
+NAME        TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+nginx-app   NodePort   10.105.125.201   <none>        80:31844/TCP   3m23s
+Name:                     nginx-app
+Namespace:                default
+Labels:                   app=nginx-app
+Annotations:              <none>
+Selector:                 app=nginx-app
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.105.125.201
+IPs:                      10.105.125.201
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  31844/TCP
+Endpoints:                172.16.123.1:80,172.16.202.1:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
 ```
 
 ### Curl a worker node on port detailed in the describe step `NodePort`
 ```bash
-curl http://192.168.63.103:<NODEPORT>
+curl http://localhost:<NODEPORT> #on cluster
+curl http://<node-server-ip>:<NODEPORT> #off cluster
+```
+
+### Cleanup deployment
+```bash
+ kubectl delete deployment nginx-app
 ```
