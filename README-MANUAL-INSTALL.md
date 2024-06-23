@@ -50,10 +50,10 @@ EOF
 
 ## Disable Swap and Add Kernel Parameters
 
-### Execute following commands to disable swap and prevent fstab from reloading
+### Execute the following commands to disable swap and prevent fstab from reloading
 ```bash
 sudo swapoff -a
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
 ```
 
 ### Load the following kernel modules on all the nodes
@@ -87,7 +87,7 @@ sudo sysctl --system
 sudo apt update && sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
 ```
 
-### Enable docker repository
+### Enable the docker repository
 ```bash
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -164,12 +164,12 @@ kubectl get nodes
 ## Installing Calico Network Plugin
 
 ### Applying the Pod Manifest
-> A network plugin is required to enable communication between pods in the cluster. Run the following kubectl command to install Calico network plugin from the master node.
+> A network plugin is required to enable communication between pods in the cluster. Run the following kubectl command to install the Calico network plugin from the master node.
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/calico.yaml
 ```
 
-### Verify the status of the pods in kube-system namespace
+### Verify the status of the pods in the kube-system namespace
 ```bash
 kubectl get pods -n kube-system -o wide
 ```
@@ -191,7 +191,7 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/confi
 ```
 
 ### Configuring MetalLB for the Lab environment
-The address pool must be the same pool the nodes are in, in my case the ip range is 192.168.189.x/24 for the servers. The pool will generate a new address for each k8s service marked as a loadbalancer. In my case the first ip assumed when deployment of the below script will generate a ip of 192.168.189.51 that will be available for the first load balancer after staging.
+The address pool must be the same pool the nodes are in, in my case the ip range is 192.168.189.x/24 for the servers. The pool will generate a new address for each k8s service marked as a loadbalancer. In my case, the first IP assumed when deployment of the below script will generate an IP of 192.168.189.51 that will be available for the first load balancer after staging.
 ```bash
 mkdir -p .kubernetes/ingress/metallb/homelab
 sudo tee .kubernetes/ingress/metallb/homelab/metallb-home.yml <<EOF
@@ -220,7 +220,7 @@ kubectl apply -f .kubernetes/ingress/metallb/homelab/metallb-home.yml
 kubectl create deployment nginx-app --image=nginx --replicas=3
 ```
 
-### Check the status of nginx-app deployment
+### Check the status of the nginx-app deployment
 ```bash
 kubectl get deployments nginx-app -o wide
 ```
@@ -262,14 +262,14 @@ Events:
   Normal  nodeAssigned  9m51s (x2 over 10m)  metallb-speaker     announcing from node "k8sworker3.lan" with protocol "layer2"
 ```
 
-### Curl a worker node on port detailed in the describe step `NodePort`
+### Curl a worker node on port detailed in the described step `NodePort`
 ```bash
 curl http://localhost:<NODEPORT> #on cluster
 curl http://<node-server-ip>:<NODEPORT> #off cluster
 ```
 
 ### Curl the Assigned IP from metallb-controller
-> Note that you can forward the FW to this IP address to expose it to the internet. But make sure to setup SSL first as this is a lab only put it up for a few minutes.
+> Note that you can forward the FW to this IP address to expose it to the internet. But make sure to set up SSL first, as this is a lab. Only put it up for a few minutes.
 ```bash
 curl http://192.168.189.51
 ```
