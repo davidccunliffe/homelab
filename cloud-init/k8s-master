@@ -1,5 +1,6 @@
 #cloud-config
 runcmd:
+  # These four lines are to remove the autoinstall prompt during bootstrap
   - [eval, 'echo $(cat /proc/cmdline) "autoinstall" > /root/cmdline']
   - [eval, 'mount -n --bind -o ro /root/cmdline /proc/cmdline']
   - [eval, 'snap restart subiquity.subiquity-server']
