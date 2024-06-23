@@ -21,10 +21,10 @@ autoinstall:
     - curtin in-target --target=/target -- lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
     - curtin in-target --target=/target -- resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
     # add the other k8s nodes to the hosts file
-    - echo "192.168.189.6    k8sMaster.lan"  >> /target/etc/hosts
-    - echo "192.168.189.7    k8sWorker1.lan" >> /target/etc/hosts
-    - echo "192.168.189.8    k8sWorker2.lan" >> /target/etc/hosts
-    - echo "192.168.189.9    k8sWorker3.lan" >> /target/etc/hosts
+    - echo "192.168.189.6    k8sMaster.lan k8smaster"  >> /target/etc/hosts
+    - echo "192.168.189.7    k8sWorker1.lan k8sworker1" >> /target/etc/hosts
+    - echo "192.168.189.8    k8sWorker2.lan k8sworker2" >> /target/etc/hosts
+    - echo "192.168.189.9    k8sWorker3.lan k8sworker3" >> /target/etc/hosts
 
   user-data:
     disable_root: true
