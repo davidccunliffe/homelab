@@ -40,10 +40,12 @@ exec bash
 
 ### Add the following to each node:
 ```bash
+sudo tee /etc/hosts <<EOF
 192.168.189.6    k8sMaster.lan k8smaster
 192.168.189.7    k8sWorker1.lan k8sworker1
 192.168.189.8    k8sWorker2.lan k8sworker2
 192.168.189.9    k8sWorker3.lan k8sworker3
+EOF
 ```
 
 ## Disable Swap and Add Kernel Parameters
