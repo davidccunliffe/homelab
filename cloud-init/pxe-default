@@ -1,45 +1,45 @@
-default menu.c32
-prompt 0
-timeout 100
+PROMPT 0
+TIMEOUT 100
+DEFAULT menu.c32
 
-menu title Select an option to boot
+MENU TITLE Select an option to boot
 
 LABEL Ubuntu24.04LTS Live K8s Master
     MENU LABEL Ubuntu 24.04 LTS Live Base Build (k8sMaster)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND initrd=ubuntu-24.04-live-server-amd64/casper/initrd ip=dhcp fsck.mode=skip url=https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso autoinstall ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-master cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-master
 
 LABEL Ubuntu24.04LTS Live K8s Worker1
     MENU LABEL Ubuntu 24.04 LTS Live Base Build (k8sWorker1)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND initrd=ubuntu-24.04-live-server-amd64/casper/initrd ip=dhcp fsck.mode=skip url=https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso autoinstall ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker1 cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker1
     
 LABEL Ubuntu24.04LTS Live K8s Worker2
     MENU LABEL Ubuntu 24.04 LTS Live Base Build (k8sWorker2)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND initrd=ubuntu-24.04-live-server-amd64/casper/initrd ip=dhcp fsck.mode=skip url=https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso autoinstall ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker2 cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker1
     
 LABEL Ubuntu24.04LTS Live K8s Worker3
     MENU LABEL Ubuntu 24.04 LTS Live Base Build (k8sWorker3)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND initrd=ubuntu-24.04-live-server-amd64/casper/initrd ip=dhcp fsck.mode=skip url=https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso autoinstall ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker3 cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker3
     
 LABEL Ubuntu24.04LTS NFS K8s Master
     MENU LABEL Ubuntu 24.04 LTS Local Base Build (k8sMaster)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND netboot=nfs ip=dhcp nfsroot=192.168.112.175:/volume1/pxeboot/ubuntu-24.04-live-server-amd64 initrd=ubuntu-24.04-live-server-amd64/casper/initrd fsck.mode=skip ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-master cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-master
     
 LABEL Ubuntu24.04LTS NFS K8s Worker1
     MENU LABEL Ubuntu 24.04 LTS Local Base Build (k8sWorker1)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND netboot=nfs ip=dhcp nfsroot=192.168.112.175:/volume1/pxeboot/ubuntu-24.04-live-server-amd64 initrd=ubuntu-24.04-live-server-amd64/casper/initrd fsck.mode=skip ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker1 cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker1
     
 LABEL Ubuntu24.04LTS NFS K8s Worker2
     MENU LABEL Ubuntu 24.04 LTS Local Base Build (k8sWorker2)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND netboot=nfs ip=dhcp nfsroot=192.168.112.175:/volume1/pxeboot/ubuntu-24.04-live-server-amd64 initrd=ubuntu-24.04-live-server-amd64/casper/initrd fsck.mode=skip ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker2 cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker2
     
 LABEL Ubuntu24.04LTS NFS K8s Worker3
     MENU LABEL Ubuntu 24.04 LTS Local Base Build (k8sWorker3)
-    kernel ubuntu-24.04-live-server-amd64/casper/vmlinuz
+    KERNEL ubuntu-24.04-live-server-amd64/casper/vmlinuz
     APPEND netboot=nfs ip=dhcp nfsroot=192.168.112.175:/volume1/pxeboot/ubuntu-24.04-live-server-amd64 initrd=ubuntu-24.04-live-server-amd64/casper/initrd fsck.mode=skip ds=nocloud-net;s=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker3 cloud-config-url=https://raw.githubusercontent.com/davidccunliffe/homelab/main/cloud-init/k8s-worker3
