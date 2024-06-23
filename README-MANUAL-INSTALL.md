@@ -178,48 +178,88 @@ kubectl get pods -n kube-system -o wide
 ```bash
 kubectl get nodes -o wide
 ```
+## Installing Helm and MetalLB
+
+### This script will install the latest version of Helm
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+
+### Installing MetalLB v0.14.5
+```bash
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+```
+
+### Configuring MetalLB for the Lab environment
+The address pool must be the same pool the nodes are in, in my case the ip range is 192.168.189.x/24 for the servers. The pool will generate a new address for each k8s service marked as a loadbalancer. In my case the first ip assumed when deployment of the below script will generate a ip of 192.168.189.51 that will be available for the first load balancer after staging.
+```bash
+mkdir -p .kubernetes/ingress/metallb/homelab
+sudo tee .kubernetes/ingress/metallb/homelab/metallb-home.yml <<EOF
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: k8s-lb-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.189.51-192.168.189.100
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: k8s-lb-pool
+  namespace: metallb-system
+EOF
+kubectl apply -f .kubernetes/ingress/metallb/homelab/metallb-home.yml
+```
 
 ## Test your Kubernetes Cluster Install now
 
 ### Will use nginx to test the installation, by creating a deployment called nginx-app
 ```bash
-kubectl create deployment nginx-app --image=nginx --replicas=2
+kubectl create deployment nginx-app --image=nginx --replicas=3
 ```
 
 ### Check the status of nginx-app deployment
 ```bash
-kubectl get deployment nginx-app
+kubectl get deployments nginx-app -o wide
 ```
 
-### Expose the deployment as Nodeport on port 80
+### Expose the deployment as LoadBalancer on port 80
 ```bash
-kubectl expose deployment nginx-app --type=NodePort --port=80
+kubectl expose deployment nginx-app --type=LoadBalancer --name=nginx-app --port=80 --protocol=TCP
 ```
 
 ### Check Service status
 ```bash
 kubectl get svc nginx-app
 kubectl describe svc nginx-app
+```
 
-NAME        TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
-nginx-app   NodePort   10.105.125.201   <none>        80:31844/TCP   3m23s
+Here is a sample of the output
+```bash
 Name:                     nginx-app
 Namespace:                default
 Labels:                   app=nginx-app
-Annotations:              <none>
+Annotations:              metallb.universe.tf/ip-allocated-from-pool: k8s-lb-pool
 Selector:                 app=nginx-app
-Type:                     NodePort
+Type:                     LoadBalancer
 IP Family Policy:         SingleStack
 IP Families:              IPv4
-IP:                       10.105.125.201
-IPs:                      10.105.125.201
+IP:                       10.109.135.157
+IPs:                      10.109.135.157
+LoadBalancer Ingress:     192.168.189.51
 Port:                     <unset>  80/TCP
 TargetPort:               80/TCP
-NodePort:                 <unset>  31844/TCP
-Endpoints:                172.16.123.1:80,172.16.202.1:80
+NodePort:                 <unset>  30322/TCP
+Endpoints:                172.16.123.9:80,172.16.202.9:80,172.16.218.133:80
 Session Affinity:         None
 External Traffic Policy:  Cluster
-Events:                   <none>
+Events:
+  Type    Reason        Age                  From                Message
+  ----    ------        ----                 ----                -------
+  Normal  IPAllocated   10m                  metallb-controller  Assigned IP ["192.168.189.51"]
+  Normal  nodeAssigned  9m51s (x2 over 10m)  metallb-speaker     announcing from node "k8sworker3.lan" with protocol "layer2"
 ```
 
 ### Curl a worker node on port detailed in the describe step `NodePort`
@@ -228,7 +268,12 @@ curl http://localhost:<NODEPORT> #on cluster
 curl http://<node-server-ip>:<NODEPORT> #off cluster
 ```
 
+### Curl the Assigned IP from metallb-controller
+```bash
+curl http://192.168.189.51
+```
+
 ### Cleanup deployment
 ```bash
- kubectl delete deployment nginx-app
+kubectl delete all -l app=nginx-app
 ```
