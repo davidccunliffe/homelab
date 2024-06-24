@@ -210,6 +210,7 @@ metadata:
   name: k8s-lb-pool
   namespace: metallb-system
 EOF
+sleep 10
 kubectl apply -f .kubernetes/ingress/metallb/homelab/metallb-home.yml
 ```
 
